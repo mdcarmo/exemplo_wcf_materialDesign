@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="AppWCF.Views.Client"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:VM="clr-namespace:AppWCF.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <VM:ClientViewModel x:Key="ClientViewModel" />
+    </UserControl.Resources>
+
+    <Grid DataContext="{StaticResource ResourceKey=ClientViewModel}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Margin="15" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Text="Nome :" />
+        <TextBlock Margin="15" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Text="Gênero :" />
+        <TextBlock Margin="15" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Text="RG:" />
+        <TextBlock Margin="15" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Text="CPF:" />
+        <TextBox Margin="5" Grid.Row="0" Grid.Column="1" MaxLength="60" Text="{Binding Cliente.Nome, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox Margin="3" Grid.Row="0" Grid.Column="3" ItemsSource="{Binding lGenero}" DisplayMemberPath="Descr" SelectedValuePath="Codigo"
+                 SelectedItem="{Binding Cliente.Genero, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Margin="5" Grid.Row="1" Grid.Column="1" MaxLength="9" Text="{Binding Cliente.RG, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Margin="5" Grid.Row="1" Grid.Column="3" MaxLength="11" Text="{Binding Cliente.CPF, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Margin="5" Width="80" Content="Salvar" Command="{Binding Salvar}" />
+            <Button Margin="5" Width="80" Content="Limpar" Command="{Binding Limpar}" />
+            <Button Margin="5" Width="80" Content="Deletar" Command="{Binding Deletar}" />
+        </StackPanel>
+        <DataGrid Margin="5" Grid.Row="3" 
+                  Grid.ColumnSpan="4" 
+                  ItemsSource="{Binding Clientes}" 
+                  SelectedItem="{Binding ClienteSelecionado}" 
+                  CanUserAddRows="False" 
+                  CanUserDeleteRows="False" 
+                  IsReadOnly="True" 
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="250" Header="Nome" Binding="{Binding Nome, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}" />
+                <DataGridTextColumn Width="100" Header="Gênero" Binding="{Binding Genero.Descr}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}" />
+                <DataGridTextColumn Width="100" Header="RG" Binding="{Binding RG}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}" />
+                <DataGridTextColumn Width="100" Header="CPF" Binding="{Binding CPF}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"/>
+            </DataGrid.Columns>
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DoubleClickCommand}" />
+            </DataGrid.InputBindings>
+        </DataGrid>
+    </Grid>
+</UserControl>
